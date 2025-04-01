@@ -3,8 +3,8 @@
 #define ESP_TX 2
 #define ESP_RX 3
 
-const String WIFI_SSID = "3C Roastery Coffee";
-const String WIFI_PASS = "caphedacsan";
+const String WIFI_SSID = "VietDung";
+const String WIFI_PASS = "0915363866";
 String IP = "";
 
 const int cbvao = 4;                       // Entrance sensor
@@ -44,9 +44,6 @@ void loop() {
 
   unsigned long currentTime = millis();
 
-  if (!entranceSensor && !exitSensor && (currentTime - lastTriggerTime > resetTime)) {
-    lastTrigger = 0;
-  }
 
   if (entranceSensor && lastTrigger == 0 && (currentTime - lastTriggerTime > debounceTime)) {
     lastTrigger = 1;
@@ -62,6 +59,7 @@ void loop() {
     sendJSON();
   }
 
+  // Sửa lỗi: thêm kiểm tra debounceTime
   if (exitSensor && lastTrigger == 0 && (currentTime - lastTriggerTime > debounceTime)) {
     lastTrigger = 2;
     lastTriggerTime = currentTime;
@@ -91,8 +89,8 @@ void loop() {
 }
 
 void sendJSON() {
-  String host = "192.168.1.121";  
-  int port = 8080;                 
+  String host = "192.168.88.127";
+  int port = 8080;
 
   String json = "{\"count\":" + String(peopleCount) + "}";
   Serial.println(json);
@@ -102,9 +100,9 @@ void sendJSON() {
 
   String httpRequest = "POST /iot/data HTTP/1.1\r\n";
   httpRequest += "Host: " + host + ":" + String(port) + "\r\n";
-  httpRequest += "Content-Type: application/json\r\n";  
+  httpRequest += "Content-Type: application/json\r\n";
   httpRequest += "Content-Length: " + String(json.length()) + "\r\n\r\n";
-  httpRequest += json;  
+  httpRequest += json;
   Serial.println(httpRequest);
 
   cmd = "AT+CIPSEND=0," + String(httpRequest.length()) + "\r\n";
@@ -149,7 +147,7 @@ String getIP(String response) {
   int start = response.indexOf("+CIFSR:STAIP,\"");
   if (start == -1) return "Not Found";
 
-  start += 14;  
+  start += 14;
   int end = response.indexOf("\"", start);
   if (end == -1) return "Not Found";
 

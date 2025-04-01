@@ -30,7 +30,6 @@ public class SensorDataController {
         PeopleCount peopleCount = new PeopleCount();
         peopleCount.setCount(data.getCount());
         repository.save(peopleCount);
-
         PeopleData responseData = new PeopleData(peopleCount.getCount(), peopleCount.getTimestamp());
 
         return ResponseEntity.ok(responseData);

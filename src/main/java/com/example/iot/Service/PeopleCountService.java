@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 @Service
 public class PeopleCountService {
@@ -15,15 +16,15 @@ public class PeopleCountService {
         this.peopleCountRepository = peopleCountRepository;
     }
 
-    public List<Map<String, Object>> getHourlyPeopleCount() {
-        return peopleCountRepository.getHourlyPeopleCount();
+    public List<Map<String, Object>> getHourlyPeopleCountByDate(Date selectedDate) {
+        return peopleCountRepository.getHourlyPeopleCountByDate(selectedDate);
+    }
+
+    public List<PeopleCount> getRecentPeopleCountTimelineByDate(Date selectedDate) {
+        return peopleCountRepository.getRecentPeopleCountTimelineByDate(selectedDate);
     }
 
     public PeopleCount getPeopleCount() {
         return peopleCountRepository.getLastPeopleCount();
-    }
-
-    public List<PeopleCount> getRecentPeopleCountTimeline() {
-        return peopleCountRepository.getRecentPeopleCountTimeline();
     }
 }
